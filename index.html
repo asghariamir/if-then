@@ -968,6 +968,16 @@
                 <div id="feedbackContent"></div>
                 <button class="btn-primary" onclick="nextProblem()" style="margin-top: 1rem;">Next Problem</button>
             </div>
+            
+            <!-- Challenge AI Form -->
+            <form id="challengeForm" class="form-section hidden" style="background: var(--light-gray); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem;">
+                <h3>Challenge the AI's Assessment</h3>
+                <p>If you believe the AI is incorrect, please explain your reasoning.</p>
+                <div class="control-group" style="width:100%; margin-top: 1rem;">
+                    <textarea id="challengeInput" rows="3" placeholder="My reasoning is..." required style="width: 100%; padding: 0.75rem; border: 2px solid var(--medium-gray); border-radius: 8px;"></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top: 1rem;">Submit Challenge</button>
+            </form>
         </div>
 
         <!-- Analysis Tab -->
@@ -1019,6 +1029,7 @@
             hintsRemaining: 3
         },
         currentProblem: null,
+        lastAIResponse: '', // Store AI reasoning for challenges
         revealedStatements: [],
         testCases: [],
         checkAttempt: 0
@@ -1085,6 +1096,12 @@
                 showNotification('Complete the learning steps to unlock this section!', 'warning');
             }
         });
+        
+        // Challenge form submission
+        const challengeForm = document.getElementById('challengeForm');
+        if (challengeForm) {
+            challengeForm.addEventListener('submit', handleChallengeSubmit);
+        }
     }
 
     function switchTab(tabName) {
@@ -1429,10 +1446,38 @@
         
         try {
             const response = await callAI(prompt);
+            state.lastAIResponse = response; // Store for potential challenge
             const isValid = response.toLowerCase().startsWith('yes');
             showDetailedFeedback(isValid, response);
         } catch (error) {
             showNotification('Failed to check counterexample. Please try again.', 'error');
+        }
+    }
+
+    async function handleChallengeSubmit(e) {
+        e.preventDefault();
+        const userReasoning = document.getElementById('challengeInput').value;
+        document.getElementById('challengeForm').classList.add('hidden');
+        showDetailedFeedback('loading', '<h3>Re-evaluating with AI...</h3>');
+
+        const prompt = `
+            You are a humble math tutor AI. You previously made an assessment, and a user is challenging it.
+            Original Problem: If P, then Q is "If ${state.currentProblem.p}, then ${state.currentProblem.q}".
+            The statement being analyzed was the converse: "If ${state.currentProblem.q}, then ${state.currentProblem.p}".
+            Your previous analysis/response was: "${state.lastAIResponse}"
+            The user is challenging you with this reasoning: "${userReasoning}"
+
+            Task: Re-evaluate everything. Use LaTeX for any math notation.
+            - If the user is correct, you MUST admit your mistake and provide the corrected explanation.
+            - If the user is wrong, politely explain the flaw in their reasoning.
+        `;
+        
+        try {
+            const aiReevaluation = await callAI(prompt);
+            showDetailedFeedback('neutral', `<h3>AI Re-evaluation:</h3><p>${aiReevaluation}</p>`);
+        } catch (error) {
+            console.error("AI re-evaluation failed:", error);
+            showDetailedFeedback('error', `<h3>Error</h3><p>Could not process the challenge. Please try again.</p>`);
         }
     }
 
@@ -1443,9 +1488,16 @@
         
         document.getElementById('practiceQuizSection').style.display = 'none';
         document.getElementById('counterexampleSection').classList.add('hidden');
+        document.getElementById('challengeForm').classList.add('hidden');
         feedbackSection.classList.remove('hidden');
         
-        if (isCorrect) {
+        if (isCorrect === 'loading') {
+            feedbackTitle.textContent = '';
+            feedbackContent.innerHTML = aiResponse;
+        } else if (isCorrect === 'neutral') {
+            feedbackTitle.textContent = '';
+            feedbackContent.innerHTML = aiResponse;
+        } else if (isCorrect === true) {
             feedbackTitle.textContent = '✓ Correct!';
             feedbackTitle.style.color = 'var(--success-color)';
             
@@ -1459,6 +1511,9 @@
                 content += '<div class="feedback-step-number">2</div>';
                 content += `<div class="feedback-step-content">AI Feedback: ${aiResponse}</div>`;
                 content += '</div>';
+                
+                // Add challenge button for counterexample feedback
+                content += '<button class="challenge-btn" onclick="showChallengeForm()">🤔 Challenge AI\'s Assessment</button>';
             }
             
             feedbackContent.innerHTML = content;
@@ -1468,21 +1523,32 @@
             
             let content = '<div class="feedback-step">';
             content += '<div class="feedback-step-number">1</div>';
-            const truthText = state.currentProblem.converse.truth ? 'TRUE' : 'FALSE';
-            content += `<div class="feedback-step-content">The converse is actually <strong>${truthText}</strong>.</div>`;
-            content += '</div>';
             
-            if (!state.currentProblem.converse.truth) {
-                content += '<div class="feedback-step">';
-                content += '<div class="feedback-step-number">2</div>';
-                content += `<div class="feedback-step-content">A counterexample is: <strong>${state.currentProblem.converse.counterexample}</strong></div>`;
+            if (typeof isCorrect === 'boolean') {
+                // This is from submitAnswer (true/false question)
+                const truthText = state.currentProblem.converse.truth ? 'TRUE' : 'FALSE';
+                content += `<div class="feedback-step-content">The converse is actually <strong>${truthText}</strong>.</div>`;
                 content += '</div>';
+                
+                if (!state.currentProblem.converse.truth) {
+                    content += '<div class="feedback-step">';
+                    content += '<div class="feedback-step-number">2</div>';
+                    content += `<div class="feedback-step-content">A counterexample is: <strong>${state.currentProblem.converse.counterexample}</strong></div>`;
+                    content += '</div>';
+                }
+                
+                content += '<div class="feedback-step">';
+                content += '<div class="feedback-step-number">3</div>';
+                content += '<div class="feedback-step-content">Remember: The converse swaps P and Q. Look at the Venn diagram to see why this changes the truth value.</div>';
+                content += '</div>';
+            } else {
+                // This is from checkCounterexample (AI feedback)
+                content += `<div class="feedback-step-content">AI Feedback: ${aiResponse}</div>`;
+                content += '</div>';
+                
+                // Add challenge button for counterexample feedback
+                content += '<button class="challenge-btn" onclick="showChallengeForm()">🤔 Challenge AI\'s Assessment</button>';
             }
-            
-            content += '<div class="feedback-step">';
-            content += '<div class="feedback-step-number">3</div>';
-            content += '<div class="feedback-step-content">Remember: The converse swaps P and Q. Look at the Venn diagram to see why this changes the truth value.</div>';
-            content += '</div>';
             
             feedbackContent.innerHTML = content;
         }
@@ -1493,8 +1559,14 @@
         displayAnalysis();
     }
 
+    function showChallengeForm() {
+        document.getElementById('challengeForm').classList.remove('hidden');
+        document.getElementById('feedbackSection').classList.add('hidden');
+    }
+
     function nextProblem() {
         document.getElementById('feedbackSection').classList.add('hidden');
+        document.getElementById('challengeForm').classList.add('hidden');
         generateProblem();
     }
 
