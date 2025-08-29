@@ -1032,7 +1032,8 @@
         lastAIResponse: '', // Store AI reasoning for challenges
         revealedStatements: [],
         testCases: [],
-        checkAttempt: 0
+        checkAttempt: 0,
+        previousProblems: [] // Store generated problems to avoid duplicates
     };
 
     // Alternative check statements for when user gets it wrong
@@ -1068,6 +1069,8 @@
             // Save completion status to localStorage
             localStorage.setItem('logicExplorerCompleted', 'true');
             showNotification('Practice mode unlocked!', 'success');
+            // Switch to Practice tab
+            switchTab('practice');
         }
     }
 
@@ -1221,9 +1224,16 @@
         const category = document.getElementById('categorySelect').value;
         const difficulty = state.progress.currentLevel;
         
+        // Create a list of previous P statements to avoid
+        const previousPStatements = state.previousProblems.map(p => p.p).join(', ');
+        
         const prompt = `
             You are a mathematics educator creating a logic problem.
             Generate an 'If P, then Q' conditional statement about "${category}" with a difficulty of "${difficulty}".
+            
+            IMPORTANT: Avoid these previous problems: ${previousPStatements || 'None yet'}
+            Create a NEW and DIFFERENT problem.
+            
             RULES:
             1. 'If P, then Q' must be logically true.
             2. You must also generate the converse, inverse, and contrapositive statements.
@@ -1248,6 +1258,18 @@
         try {
             const response = await callAI(prompt);
             state.currentProblem = JSON.parse(response);
+            
+            // Store this problem to avoid duplicates
+            state.previousProblems.push({
+                p: state.currentProblem.p,
+                q: state.currentProblem.q
+            });
+            
+            // Keep only last 10 problems to avoid prompt getting too long
+            if (state.previousProblems.length > 10) {
+                state.previousProblems.shift();
+            }
+            
             displayProblem();
             
             // Reset hint system
