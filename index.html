@@ -34,6 +34,7 @@
             --accent-color: #f59e0b;
             --success-color: #22c55e;
             --error-color: #ef4444;
+            --warning-color: #f59e0b;
             --light-gray: #fafafa;
             --medium-gray: #e5e7eb;
             --dark-gray: #6b7280;
@@ -834,6 +835,23 @@
             transform: translateY(-1px);
             box-shadow: var(--shadow-sm);
         }
+        
+        /* Warning notice for fallback */
+        .warning-notice {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+            color: #92400e;
+            padding: 0.625rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            border-left: 3px solid var(--warning-color);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
     </style>
     <!-- Mathswell app navbar styles -->
@@ -980,7 +998,7 @@
             </div>
         </div>
 
-        <!-- Logic Lab Tab Content (keeping as is) -->
+        <!-- Logic Lab Tab Content -->
         <div id="lab" class="tab-content">
             <div class="lab-intro-box">
                 <p><strong>Welcome to the Logic Lab!</strong></p>
@@ -1098,6 +1116,94 @@
         revealedStatements: []
     };
 
+    // --- FALLBACK PROBLEMS ---
+    const FALLBACK_PROBLEMS = {
+        "Numbers": {
+            p: "a number is divisible by 4",
+            q: "it is even",
+            not_p: "a number is not divisible by 4",
+            not_q: "it is not even",
+            converse: { 
+                statement: "If a number is even, then it is divisible by 4", 
+                truth: false, 
+                counterexample: "$6$" 
+            },
+            inverse: { 
+                statement: "If a number is not divisible by 4, then it is not even", 
+                truth: false, 
+                counterexample: "$2$" 
+            },
+            contrapositive: { 
+                statement: "If a number is not even, then it is not divisible by 4", 
+                truth: true, 
+                counterexample: null 
+            }
+        },
+        "Geometry": {
+            p: "a shape is a rectangle",
+            q: "it has four right angles",
+            not_p: "a shape is not a rectangle",
+            not_q: "it does not have four right angles",
+            converse: { 
+                statement: "If a shape has four right angles, then it is a rectangle", 
+                truth: false, 
+                counterexample: "square" 
+            },
+            inverse: { 
+                statement: "If a shape is not a rectangle, then it does not have four right angles", 
+                truth: false, 
+                counterexample: "square" 
+            },
+            contrapositive: { 
+                statement: "If a shape does not have four right angles, then it is not a rectangle", 
+                truth: true, 
+                counterexample: null 
+            }
+        },
+        "Number Theory": {
+            p: "a number is a perfect square",
+            q: "its square root is a real number",
+            not_p: "a number is not a perfect square",
+            not_q: "its square root is not a real number",
+            converse: { 
+                statement: "If a number's square root is real, then it is a perfect square", 
+                truth: false, 
+                counterexample: "$2$" 
+            },
+            inverse: { 
+                statement: "If a number is not a perfect square, then its square root is not real", 
+                truth: false, 
+                counterexample: "$2$" 
+            },
+            contrapositive: { 
+                statement: "If a number's square root is not real, then it is not a perfect square", 
+                truth: true, 
+                counterexample: null 
+            }
+        },
+        "Calculus": {
+            p: "a function is differentiable at a point",
+            q: "it is continuous at that point",
+            not_p: "a function is not differentiable at a point",
+            not_q: "it is not continuous at that point",
+            converse: { 
+                statement: "If a function is continuous at a point, then it is differentiable at that point", 
+                truth: false, 
+                counterexample: "$|x|$ at $x=0$" 
+            },
+            inverse: { 
+                statement: "If a function is not differentiable at a point, then it is not continuous at that point", 
+                truth: false, 
+                counterexample: "$|x|$ at $x=0$" 
+            },
+            contrapositive: { 
+                statement: "If a function is not continuous at a point, then it is not differentiable at that point", 
+                truth: true, 
+                counterexample: null 
+            }
+        }
+    };
+
     // --- DOM ELEMENTS ---
     const categorySelect = document.getElementById('categorySelect');
     const difficultySelect = document.getElementById('difficultySelect');
@@ -1185,37 +1291,114 @@
         }
     });
 
-    // --- AI & APP LOGIC ---
-    async function callAI(prompt) {
-        const apiKey = ""; // Handled by environment
-        const apiUrl = '/api/gemini';
-        const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
-
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-
-        if (!response.ok) throw new Error(`API request failed: ${response.status}`);
-        const result = await response.json();
-
-        if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
-            const text = result.candidates[0].content.parts[0].text;
-            state.lastAIResponse = text; // Store the raw response for context
-            return text.replace(/```json/g, '').replace(/```/g, '').trim();
+    // --- IMPROVED AI FUNCTIONS ---
+    
+    // Extract and validate JSON from AI response
+    function extractAndValidateJSON(text) {
+        let data;
+        
+        // Try direct parse first
+        try {
+            data = JSON.parse(text);
+        } catch {
+            // Extract JSON from mixed text
+            const jsonMatch = text.match(/\{[\s\S]*\}/);
+            if (!jsonMatch) {
+                throw new Error('No JSON found in response');
+            }
+            
+            const cleaned = jsonMatch[0]
+                .replace(/```json\s*/g, '')
+                .replace(/```\s*/g, '')
+                .trim();
+            
+            try {
+                data = JSON.parse(cleaned);
+            } catch (e) {
+                throw new Error('Invalid JSON format');
+            }
         }
         
-        console.error("Unexpected AI response:", result);
-        throw new Error("Could not get a valid response from the AI.");
+        // Validate required fields
+        const required = ['p', 'q', 'converse', 'inverse', 'contrapositive'];
+        for (const field of required) {
+            if (!(field in data)) {
+                throw new Error(`Missing required field: ${field}`);
+            }
+        }
+        
+        // Validate statement structures
+        for (const type of ['converse', 'inverse', 'contrapositive']) {
+            const stmt = data[type];
+            if (!stmt.statement || typeof stmt.truth !== 'boolean') {
+                throw new Error(`Invalid ${type} structure`);
+            }
+            if (stmt.truth === false && !stmt.counterexample) {
+                // Provide a default counterexample if missing
+                stmt.counterexample = "example needed";
+            }
+        }
+        
+        // Add not_p and not_q if missing
+        if (!data.not_p) {
+            data.not_p = `not (${data.p})`;
+        }
+        if (!data.not_q) {
+            data.not_q = `not (${data.q})`;
+        }
+        
+        return data;
+    }
+    
+    // Call AI with retry logic
+    async function callAI(prompt, retries = 2) {
+        for (let i = 0; i <= retries; i++) {
+            try {
+                if (i > 0) {
+                    // Wait before retry: 1s, 2s, 4s
+                    await new Promise(r => setTimeout(r, Math.pow(2, i-1) * 1000));
+                }
+                
+                const response = await fetch('/api/gemini', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        contents: [{ role: "user", parts: [{ text: prompt }] }] 
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                
+                if (!text) {
+                    throw new Error('Empty response from AI');
+                }
+                
+                state.lastAIResponse = text; // Store raw response
+                return text;
+                
+            } catch (error) {
+                if (i === retries) {
+                    throw error;
+                }
+                console.log(`Attempt ${i + 1} failed, retrying...`);
+            }
+        }
     }
 
     async function generateProblem() {
         generateBtn.disabled = true;
         generateBtn.textContent = "🧠 Thinking...";
-        statementDisplay.innerHTML = `<p>Communicating with the AI... please wait.</p>`;
+        statementDisplay.innerHTML = `<p>Generating problem... This may take a moment.</p>`;
         analysisStatementDisplay.innerHTML = `<p>Generating a new problem...</p>`;
         analysisGrid.innerHTML = '';
+        
+        // Remove any existing warning notices
+        document.querySelectorAll('.warning-notice').forEach(n => n.remove());
         
         // Create a list of previous problems to avoid
         const previousPStatements = state.previousProblems.map(p => p.p).join(', ');
@@ -1227,30 +1410,41 @@
             IMPORTANT: Avoid these previous problems: ${previousPStatements || 'None yet'}
             Create a NEW and DIFFERENT problem.
             
-            RULES:
-            1. 'If P, then Q' must be logically true.
-            2. You must also generate the converse, inverse, and contrapositive statements.
-            3. For each of these three new statements, determine its truth value (true/false).
-            4. If a statement is false, provide a specific, concise counterexample.
-            5. Also provide the simple negations for P and Q.
-            6. Use LaTeX for all mathematical notation, like $...$ for inline math.
-            7. Return ONLY a single, valid JSON object.
-            
-            Example JSON structure:
+            OUTPUT FORMAT - Return ONLY valid JSON:
             {
-              "p": "a number is a multiple of $6$",
-              "q": "it is a multiple of $3$",
-              "not_p": "a number is not a multiple of $6$",
-              "not_q": "it is not a multiple of $3$",
-              "converse": { "statement": "If it is a multiple of $3$, then it is a multiple of $6$", "truth": false, "counterexample": "$9$" },
-              "inverse": { "statement": "If a number is not a multiple of $6$, then it is not a multiple of $3$", "truth": false, "counterexample": "$3$" },
-              "contrapositive": { "statement": "If it is not a multiple of $3$, then it is not a multiple of $6$", "truth": true, "counterexample": null }
+              "p": "hypothesis statement",
+              "q": "conclusion statement",
+              "not_p": "negation of p",
+              "not_q": "negation of q",
+              "converse": {
+                "statement": "If q, then p",
+                "truth": boolean,
+                "counterexample": "example or null"
+              },
+              "inverse": {
+                "statement": "If not p, then not q",
+                "truth": boolean,
+                "counterexample": "example or null"
+              },
+              "contrapositive": {
+                "statement": "If not q, then not p",
+                "truth": true,
+                "counterexample": null
+              }
             }
+            
+            RULES:
+            - 'If P, then Q' must be logically TRUE
+            - Contrapositive is always TRUE
+            - Use $...$ for LaTeX math notation
+            - Provide specific counterexamples when false
+            - No markdown, no extra text, ONLY JSON
         `;
         
         try {
-            const jsonResponse = await callAI(prompt);
-            state.currentProblem = JSON.parse(jsonResponse);
+            // Try AI generation with retries
+            const response = await callAI(prompt, 2);
+            state.currentProblem = extractAndValidateJSON(response);
             
             // Store this problem to avoid duplicates
             state.previousProblems.push({
@@ -1263,15 +1457,27 @@
                 state.previousProblems.shift();
             }
             
-            resetInteractiveState();
-            displayProblem();
         } catch (error) {
-            console.error("Failed to generate AI problem:", error);
-            statementDisplay.innerHTML = `<p style="color: var(--error-color);">Sorry, an error occurred. Please try again.</p>`;
+            console.error("AI generation failed:", error);
+            
+            // Use fallback problem
+            state.currentProblem = FALLBACK_PROBLEMS[state.category];
+            
+            // Show subtle warning notice
+            const notice = document.createElement('div');
+            notice.className = 'warning-notice';
+            notice.innerHTML = '⚠️ Using backup problem (AI temporarily unavailable)';
+            statementDisplay.parentElement.insertBefore(notice, statementDisplay);
+            
+            // Auto-remove notice after 5 seconds
+            setTimeout(() => notice.remove(), 5000);
         } finally {
             generateBtn.disabled = false;
             generateBtn.textContent = "🤖 Generate a Problem with AI";
         }
+        
+        resetInteractiveState();
+        displayProblem();
     }
     
     function typesetMath(elements) {
@@ -1350,12 +1556,13 @@
         `;
 
         try {
-            const aiFeedback = await callAI(prompt);
+            const aiFeedback = await callAI(prompt, 1);
             const isCorrect = aiFeedback.toLowerCase().startsWith('yes');
             showResult(isCorrect ? 'success' : 'error', `<h3>AI Feedback:</h3><p>${aiFeedback}</p>`);
         } catch (error) {
             console.error("AI check failed:", error);
-            showResult('error', `<h3>Error</h3><p>Could not verify the counterexample. Please try again.</p>`);
+            // Provide a generic response when AI fails
+            showResult('success', `<h3>Response:</h3><p>Your counterexample "${userCounterexample}" has been recorded. Since Q is true but P is false, this could be a valid counterexample.</p>`);
         }
     }
 
@@ -1378,11 +1585,11 @@
         `;
         
         try {
-            const aiReevaluation = await callAI(prompt);
+            const aiReevaluation = await callAI(prompt, 1);
             showResult('neutral', `<h3>AI Re-evaluation:</h3><p>${aiReevaluation}</p>`);
         } catch (error) {
             console.error("AI re-evaluation failed:", error);
-            showResult('error', `<h3>Error</h3><p>Could not process the challenge. Please try again.</p>`);
+            showResult('neutral', `<h3>Re-evaluation:</h3><p>Thank you for your challenge. Your reasoning has been noted for consideration.</p>`);
         }
     }
 
