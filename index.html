@@ -772,17 +772,6 @@
   </a>
 </div>
         
-        <!-- Progress Tracker -->
-        <div class="progress-container">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-            </div>
-            <div class="progress-text">
-                <span id="progressText">Getting Started</span>
-                <span id="progressPercent">0%</span>
-            </div>
-        </div>
-        
         <div class="tabs">
             <button class="tab active" data-tab="learn">Learn</button>
             <button class="tab locked" data-tab="practice">Practice <span class="lock-icon">🔒</span></button>
@@ -877,7 +866,7 @@
                 
                 <div style="background: var(--light-gray); padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0;">
                     <h4>Quick Check:</h4>
-                    <p style="margin: 1rem 0;"><strong>Statement:</strong> "If x is even, then x is divisible by 2"</p>
+                    <p style="margin: 1rem 0;"><strong>Statement:</strong> <span id="checkStatement">"If x is even, then x is divisible by 2"</span></p>
                     <p>Is this statement true or false?</p>
                     <div style="display: flex; gap: 1rem; margin-top: 1rem;">
                         <button class="btn-secondary" onclick="checkAnswer(true)">TRUE</button>
@@ -888,6 +877,9 @@
                 
                 <div id="readySection" style="display: none;">
                     <button class="btn-primary" onclick="completeStep(3)">Start Practice Mode!</button>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--dark-gray);">
+                        💡 Tip: Once you complete this learning section, the Practice and Analysis tabs will remain unlocked for your next visit.
+                    </p>
                 </div>
             </div>
         </div>
@@ -954,13 +946,6 @@
             <div id="practiceQuizSection" style="display: none;">
                 <h3>Analyze the Converse</h3>
                 <p id="converseStatement" style="font-size: 1.1rem; margin: 1rem 0;"></p>
-                
-                <p style="margin: 1.5rem 0;">How confident are you about this problem?</p>
-                <div class="confidence-rating">
-                    <button class="confidence-btn" data-confidence="low">Not Sure</button>
-                    <button class="confidence-btn" data-confidence="medium">Somewhat Confident</button>
-                    <button class="confidence-btn" data-confidence="high">Very Confident</button>
-                </div>
                 
                 <div style="text-align: center; margin: 2rem 0;">
                     <p style="font-weight: 600; margin-bottom: 1rem;">Is the converse true or false?</p>
@@ -1034,34 +1019,30 @@
             hintsRemaining: 3
         },
         currentProblem: null,
-        userConfidence: null,
         revealedStatements: [],
-        testCases: []
+        testCases: [],
+        checkAttempt: 0
     };
+
+    // Alternative check statements for when user gets it wrong
+    const checkStatements = [
+        { statement: "If x is even, then x is divisible by 2", answer: true },
+        { statement: "If a number is prime, then it is odd", answer: false }, // 2 is prime but even
+        { statement: "If x > 5, then x > 3", answer: true },
+        { statement: "If a shape is a rectangle, then it is a square", answer: false }
+    ];
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
-        updateProgress();
+        // Check if user has completed the learning section before
+        if (localStorage.getItem('logicExplorerCompleted') === 'true') {
+            unlockTab('practice');
+            unlockTab('analysis');
+        }
+        
         initializeDemoVenn();
         setupEventListeners();
     });
-
-    // Progress Management
-    function updateProgress() {
-        const percent = Math.round((state.progress.steps / state.progress.totalSteps) * 100);
-        document.getElementById('progressFill').style.width = `${percent}%`;
-        document.getElementById('progressPercent').textContent = `${percent}%`;
-        
-        if (state.progress.steps === 0) {
-            document.getElementById('progressText').textContent = 'Getting Started';
-        } else if (state.progress.steps === 1) {
-            document.getElementById('progressText').textContent = 'Learning Basics';
-        } else if (state.progress.steps === 2) {
-            document.getElementById('progressText').textContent = 'Understanding Examples';
-        } else if (state.progress.steps === 3) {
-            document.getElementById('progressText').textContent = 'Ready to Practice!';
-        }
-    }
 
     function completeStep(stepNum) {
         document.getElementById(`step${stepNum}`).classList.add('completed');
@@ -1073,10 +1054,10 @@
         
         if (stepNum === 3) {
             unlockTab('practice');
+            // Save completion status to localStorage
+            localStorage.setItem('logicExplorerCompleted', 'true');
             showNotification('Practice mode unlocked!', 'success');
         }
-        
-        updateProgress();
     }
 
     function unlockTab(tabName) {
@@ -1103,15 +1084,6 @@
             } else if (e.target.matches('.tab.locked')) {
                 showNotification('Complete the learning steps to unlock this section!', 'warning');
             }
-        });
-        
-        // Confidence rating
-        document.querySelectorAll('.confidence-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.confidence-btn').forEach(b => b.classList.remove('selected'));
-                e.target.classList.add('selected');
-                state.userConfidence = e.target.dataset.confidence;
-            });
         });
     }
 
@@ -1205,13 +1177,19 @@
 
     function checkAnswer(userAnswer) {
         const feedbackDiv = document.getElementById('quickCheckFeedback');
+        const statementSpan = document.getElementById('checkStatement');
         feedbackDiv.style.display = 'block';
         
-        if (userAnswer === true) {
-            feedbackDiv.innerHTML = '<p style="color: var(--success-color);">✓ Correct! Every even number is divisible by 2 by definition.</p>';
+        const currentCheck = checkStatements[state.checkAttempt % checkStatements.length];
+        
+        if (userAnswer === currentCheck.answer) {
+            feedbackDiv.innerHTML = '<p style="color: var(--success-color);">✓ Correct!</p>';
             document.getElementById('readySection').style.display = 'block';
         } else {
-            feedbackDiv.innerHTML = '<p style="color: var(--error-color);">Not quite. Think about it: even numbers are defined as numbers divisible by 2!</p>';
+            feedbackDiv.innerHTML = '<p style="color: var(--error-color);">Not quite. Try this one:</p>';
+            state.checkAttempt++;
+            const nextCheck = checkStatements[state.checkAttempt % checkStatements.length];
+            statementSpan.textContent = `"${nextCheck.statement}"`;
         }
     }
 
@@ -1404,11 +1382,6 @@
     }
 
     function submitAnswer(userAnswer) {
-        if (!state.userConfidence) {
-            showNotification('Please select your confidence level first!', 'warning');
-            return;
-        }
-        
         state.stats.attempts++;
         const isCorrect = userAnswer === state.currentProblem.converse.truth;
         
@@ -1473,7 +1446,7 @@
         feedbackSection.classList.remove('hidden');
         
         if (isCorrect) {
-            feedbackTitle.textContent = '✓ Excellent!';
+            feedbackTitle.textContent = '✓ Correct!';
             feedbackTitle.style.color = 'var(--success-color)';
             
             let content = '<div class="feedback-step">';
@@ -1481,21 +1454,9 @@
             content += '<div class="feedback-step-content">You correctly identified the converse\'s truth value!</div>';
             content += '</div>';
             
-            if (state.userConfidence === 'high') {
-                content += '<div class="feedback-step">';
-                content += '<div class="feedback-step-number">2</div>';
-                content += '<div class="feedback-step-content">Your high confidence was well-placed!</div>';
-                content += '</div>';
-            } else if (state.userConfidence === 'low') {
-                content += '<div class="feedback-step">';
-                content += '<div class="feedback-step-number">2</div>';
-                content += '<div class="feedback-step-content">You got it right even though you weren\'t sure - trust your instincts more!</div>';
-                content += '</div>';
-            }
-            
             if (aiResponse) {
                 content += '<div class="feedback-step">';
-                content += '<div class="feedback-step-number">3</div>';
+                content += '<div class="feedback-step-number">2</div>';
                 content += `<div class="feedback-step-content">AI Feedback: ${aiResponse}</div>`;
                 content += '</div>';
             }
