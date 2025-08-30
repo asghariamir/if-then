@@ -852,6 +852,20 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+        
+        /* Animation for Venn diagram expansion */
+        @keyframes expandCircle {
+            from {
+                r: 0.35;
+            }
+            to {
+                r: 0.62;
+            }
+        }
+        
+        .expanding-circle {
+            animation: expandCircle 1.5s ease-in-out forwards;
+        }
 
     </style>
     <!-- Mathswell app navbar styles -->
@@ -1056,7 +1070,8 @@
                     <!-- Step 2: Ask for Counterexample -->
                     <form id="counterexampleForm" class="form-section hidden">
                         <h3>You're right, it's false!</h3>
-                        <p>Please provide a counterexample below.</p>
+                        <p>The converse "<span id="converse-in-form"></span>" is indeed false.</p>
+                        <p>Please provide a counterexample where Q is true but P is false:</p>
                         <div class="control-group" style="width:100%;">
                            <input type="text" id="counterexampleInput" placeholder="Enter your counterexample here" required>
                         </div>
@@ -1221,6 +1236,7 @@
     const challengeForm = document.getElementById('challengeForm');
     // Form Inputs/Display
     const converseStatement = document.getElementById('converse-statement');
+    const converseInForm = document.getElementById('converse-in-form');
     const counterexampleInput = document.getElementById('counterexampleInput');
     const challengeInput = document.getElementById('challengeInput');
     const infoCard = document.getElementById('info-card');
@@ -1519,16 +1535,25 @@
         const userAnswer = truthCheckForm.truth.value === 'true';
         const isCorrect = userAnswer === state.currentProblem.converse.truth;
 
-        handleVennClick(); // Lock the diagram
         truthCheckForm.classList.add('hidden');
 
         if (isCorrect) {
             if (userAnswer === true) { // Correctly identified as TRUE
-                showResult('success', `<h3>Correct!</h3><p>The converse statement is indeed <strong>TRUE</strong>.</p>`);
+                // Animate the Venn diagram - P expands to fill Q
+                animateVennToEqual();
+                setTimeout(() => {
+                    showResult('success', `<h3>Correct!</h3><p>The converse statement is indeed <strong>TRUE</strong>.</p><p>This means P and Q are equivalent - they describe the same set!</p>`);
+                }, 1500);
             } else { // Correctly identified as FALSE
+                // Populate the converse statement in the form
+                if (converseInForm) {
+                    converseInForm.innerHTML = state.currentProblem.converse.statement;
+                    typesetMath([converseInForm]);
+                }
                 counterexampleForm.classList.remove('hidden');
             }
         } else { // Incorrectly identified
+            handleVennClick(); // Lock the diagram
             const truthText = state.currentProblem.converse.truth ? "TRUE" : "FALSE";
             let feedback = `<h3>Not Quite.</h3><p>The converse statement is actually <strong>${truthText}</strong>.</p>`;
             if (!state.currentProblem.converse.truth) {
@@ -1536,6 +1561,66 @@
             }
             showResult('error', feedback);
         }
+    }
+    
+    // Animate Venn diagram to show P = Q
+    function animateVennToEqual() {
+        const svg = vennBox.querySelector('svg');
+        if (!svg) return;
+        
+        const svgNS = "http://www.w3.org/2000/svg";
+        
+        // Find the P circle (smaller one)
+        const circles = svg.querySelectorAll('circle');
+        let pCircle = null;
+        
+        circles.forEach(circle => {
+            const r = parseFloat(circle.getAttribute('r'));
+            if (r >= 0.35 && r <= 0.45) { // Find the P circle
+                pCircle = circle;
+            }
+        });
+        
+        if (pCircle) {
+            // Add animation to expand P to match Q
+            pCircle.style.transition = 'all 1.5s ease-in-out';
+            
+            // Create an animated circle that expands
+            const animatedCircle = document.createElementNS(svgNS, "circle");
+            animatedCircle.setAttribute("cx", "0");
+            animatedCircle.setAttribute("cy", "0");
+            animatedCircle.setAttribute("r", "0.35");
+            animatedCircle.setAttribute("fill", "rgba(15, 118, 110, 0.3)");
+            animatedCircle.setAttribute("stroke", "#0f766e");
+            animatedCircle.setAttribute("stroke-width", "0.03");
+            animatedCircle.classList.add('expanding-circle');
+            
+            // Insert the animated circle
+            svg.insertBefore(animatedCircle, pCircle);
+            pCircle.style.opacity = '0';
+            
+            // Add a text label showing P = Q
+            setTimeout(() => {
+                const equalText = document.createElementNS(svgNS, "text");
+                equalText.setAttribute("x", "0");
+                equalText.setAttribute("y", "0.85");
+                equalText.setAttribute("fill", "#0f766e");
+                equalText.setAttribute("font-size", "0.2");
+                equalText.setAttribute("font-weight", "bold");
+                equalText.setAttribute("text-anchor", "middle");
+                equalText.textContent = "P = Q";
+                equalText.style.opacity = '0';
+                equalText.style.transition = 'opacity 0.5s ease-in';
+                svg.appendChild(equalText);
+                
+                setTimeout(() => {
+                    equalText.style.opacity = '1';
+                }, 100);
+            }, 1000);
+        }
+        
+        state.isLocked = true;
+        vennBox.classList.add('locked');
     }
 
     async function handleCounterexampleSubmit(e) {
@@ -1546,13 +1631,18 @@
 
         const { p, q } = state.currentProblem;
         const prompt = `
-            You are analyzing: "If ${q}, then ${p}."
-            Proposed counterexample: "${userCounterexample}"
-            A valid counterexample must make "${q}" true and "${p}" false.
+            IMPORTANT: You are checking a counterexample for the CONVERSE statement, NOT the original.
             
-            Be brief and direct. Use LaTeX for math.
-            If valid: "Yes, that works because..."
-            If invalid: "Not quite..." and explain which condition fails.
+            The CONVERSE statement is: "If ${q}, then ${p}."
+            User's proposed counterexample: "${userCounterexample}"
+            
+            For this to be a valid counterexample to the CONVERSE:
+            - "${q}" must be TRUE for ${userCounterexample}
+            - "${p}" must be FALSE for ${userCounterexample}
+            
+            Check if both conditions are met. Use LaTeX for math.
+            If valid: "Yes, that works because [explain why ${q} is true and ${p} is false]"
+            If invalid: "Not quite. [Explain which condition fails]"
         `;
 
         try {
@@ -1562,7 +1652,7 @@
         } catch (error) {
             console.error("AI check failed:", error);
             // Provide a generic response when AI fails
-            showResult('success', `<h3>Response:</h3><p>Your counterexample "${userCounterexample}" has been recorded. Since Q is true but P is false, this could be a valid counterexample.</p>`);
+            showResult('success', `<h3>Response:</h3><p>Your counterexample "${userCounterexample}" has been recorded. For the converse to be false, we need Q true but P false.</p>`);
         }
     }
 
@@ -1627,7 +1717,10 @@
 
         const { p, q, converse } = state.currentProblem;
         const converse_truth = converse.truth;
-        const RP = converse_truth ? 0.62 : 0.40, RQ = 0.62;
+        
+        // Always start with P inside Q for visual consistency
+        // Animation will expand P if converse is true
+        const RP = 0.40, RQ = 0.62;
 
         const defs = document.createElementNS(svgNS, "defs");
         defs.innerHTML = `
@@ -1748,7 +1841,9 @@
         `;
         typesetMath([vennLegend]);
         
-        vennTooltip.textContent = `Counterexample region for "If Q, then P": Q is true, but P is false.`;
+        if (!converse_truth) {
+            vennTooltip.textContent = `Counterexample region for "If Q, then P": Q is true, but P is false.`;
+        }
     }
 
     function handleVennClick() {
