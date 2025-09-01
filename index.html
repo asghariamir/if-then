@@ -27,7 +27,7 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         :root {
-            --primary-color: #14b8a6;
+            --primary-color: #0f766e;
             --primary-light: #f0fdfa;
             --primary-dark: #0f766e;
             --secondary-color: #8b5cf6;
@@ -39,10 +39,10 @@
             --medium-gray: #e5e7eb;
             --dark-gray: #6b7280;
             --text-color: #1f2937;
-            --bg-color: #f9fafb;
+            --bg-color: #f7faf9;
             --card-color: #ffffff;
             --gradient-1: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 100%);
-            --gradient-2: linear-gradient(135deg, #5eead4 0%, #14b8a6 100%);
+            --gradient-2: linear-gradient(135deg, #10b981 0%, #0f766e 100%);
             --gradient-3: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
             --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07);
@@ -56,7 +56,7 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.6; 
-            background: linear-gradient(135deg, #f0fdfa 0%, #fafafa 100%);
+            background: var(--bg-color);
             color: var(--text-color);
             display: flex; 
             justify-content: center; 
@@ -64,72 +64,43 @@
             min-height: 100vh;
         }
         
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                radial-gradient(circle at 20% 80%, rgba(20, 184, 166, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(245, 158, 11, 0.02) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        
         .container {
             width: 100%; 
-            max-width: 800px; 
-            margin: 1rem auto; 
-            background: rgba(255, 255, 255, 0.98);
+            max-width: 1200px; 
+            margin: 0 auto; 
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(20, 184, 166, 0.08); 
-            border: 1px solid rgba(229, 231, 235, 0.6); 
-            border-radius: 24px; 
+            box-shadow: var(--shadow-lg); 
+            border: 1px solid rgba(229, 231, 235, 0.4); 
+            border-radius: 16px; 
             padding: 2rem;
             position: relative;
-            z-index: 1;
         }
         
         h1 { 
-            font-size: 2.25rem; 
+            font-size: 2.5rem; 
             background: var(--gradient-2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 0.5rem; 
+            margin-bottom: 0.75rem; 
             text-align: center; 
             font-weight: 800;
             letter-spacing: -0.025em;
         }
         
         h2 { 
-            font-size: 1.75rem; 
+            font-size: 1.5rem; 
             color: var(--text-color); 
-            margin-top: 1.5rem; 
-            margin-bottom: 1rem; 
-            padding-bottom: 0.5rem;
-            position: relative;
+            margin-top: 1.25rem; 
+            margin-bottom: 0.75rem; 
             font-weight: 700;
         }
         
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: var(--gradient-2);
-            border-radius: 2px;
-        }
-        
         h3 { 
-            font-size: 1.25rem; 
+            font-size: 1.1rem; 
             color: var(--primary-color); 
-            margin-bottom: 1rem; 
+            margin-bottom: 0.5rem; 
             font-weight: 600;
         }
 
@@ -138,22 +109,22 @@
             display: flex; 
             flex-wrap: wrap; 
             gap: 0.5rem; 
-            margin-bottom: 2rem; 
+            margin-bottom: 1.5rem; 
             justify-content: center;
-            padding: 0.4rem;
-            background: linear-gradient(135deg, rgba(240, 253, 250, 0.5) 0%, rgba(250, 250, 250, 0.5) 100%);
-            border-radius: 16px;
+            padding: 0.3rem;
+            background: rgba(240, 253, 250, 0.4);
+            border-radius: 12px;
         }
         
         .tab {
-            padding: 0.75rem 1.75rem;
+            padding: 0.6rem 1.5rem;
             background: white;
             border: 2px solid transparent;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--dark-gray);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 12px;
+            border-radius: 8px;
             font-weight: 500;
             position: relative;
             overflow: hidden;
@@ -213,13 +184,13 @@
             flex-direction: column; 
             align-items: center; 
             text-align: center; 
-            gap: 1.5rem;
+            gap: 1.25rem;
         }
         
         .intro-text { 
-            max-width: 600px; 
-            font-size: 1.05rem; 
-            line-height: 1.7;
+            max-width: 700px; 
+            font-size: 1rem; 
+            line-height: 1.6;
             color: var(--text-color);
         }
         
@@ -230,7 +201,7 @@
         
         .intro-section {
             width: 100%;
-            margin: 1rem 0;
+            margin: 0.75rem 0;
         }
         
         .scenarios-grid {
@@ -240,16 +211,10 @@
             margin: 1rem 0;
         }
         
-        @media (max-width: 600px) {
-            .scenarios-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
         .scenario-card {
             background: white;
-            padding: 1.25rem;
-            border-radius: 12px;
+            padding: 1rem;
+            border-radius: 8px;
             box-shadow: var(--shadow-sm);
             transition: all 0.3s ease;
             cursor: pointer;
@@ -268,18 +233,18 @@
         }
         
         .example-box {
-            background: linear-gradient(135deg, rgba(240, 253, 250, 0.6) 0%, rgba(250, 250, 250, 0.8) 100%);
-            padding: 1.25rem;
-            border-radius: 12px;
-            margin: 1rem 0;
+            background: rgba(240, 253, 250, 0.5);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 0.75rem 0;
             text-align: left;
-            border: 1px solid rgba(20, 184, 166, 0.15);
+            border: 1px solid rgba(15, 118, 110, 0.15);
         }
         
         .venn-display {
-            padding: 1.5rem;
-            background: linear-gradient(135deg, rgba(250, 250, 250, 0.8) 0%, rgba(240, 253, 250, 0.4) 100%);
-            border-radius: 20px;
+            padding: 1.25rem;
+            background: rgba(250, 250, 250, 0.7);
+            border-radius: 16px;
             box-shadow: var(--shadow-sm);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -289,19 +254,20 @@
             box-shadow: var(--shadow-md);
         }
 
-        /* --- Enhanced Lab Components --- */
+        /* --- Lab Components - More Spacious Layout --- */
         .lab-intro-box {
-            background: linear-gradient(135deg, rgba(240, 253, 250, 0.7) 0%, rgba(250, 250, 250, 0.9) 100%);
+            background: rgba(240, 253, 250, 0.6);
             border-left: 4px solid var(--primary-color);
-            padding: 1.25rem 1.75rem;
-            margin-bottom: 2rem;
-            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
             box-shadow: var(--shadow-sm);
         }
         
         .lab-intro-box p { 
             margin-bottom: 0.5rem;
             color: var(--text-color);
+            font-size: 0.95rem;
         }
         
         .lab-intro-box ul { 
@@ -310,59 +276,51 @@
             color: var(--dark-gray);
         }
         
-        .lab-intro-box li {
-            margin-bottom: 0.4rem;
-        }
-        
         .ai-disclaimer {
             font-size: 0.85rem; 
             font-style: italic; 
             color: var(--dark-gray);
-            margin-top: 1rem; 
-            padding-top: 0.75rem;
+            margin-top: 0.75rem; 
+            padding-top: 0.5rem;
             border-top: 1px dashed var(--medium-gray);
-            opacity: 0.9;
         }
         
         .controls-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-            padding: 1.75rem;
-            background: linear-gradient(135deg, rgba(250, 250, 250, 0.9) 0%, rgba(245, 247, 250, 0.6) 100%);
-            border-radius: 16px;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+            grid-template-columns: 1fr 1fr auto;
+            gap: 1rem;
+            align-items: end;
+            margin-bottom: 1.5rem;
+            padding: 1.25rem;
+            background: rgba(250, 250, 250, 0.8);
+            border-radius: 12px;
         }
         
-        @media (min-width: 600px) {
+        @media (max-width: 768px) {
             .controls-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .generate-button-container {
-                grid-column: 1 / -1;
+                grid-template-columns: 1fr;
             }
         }
         
         .control-group { 
             display: flex; 
             flex-direction: column; 
-            gap: 0.5rem; 
+            gap: 0.4rem; 
         }
         
         .control-group label { 
             font-weight: 600; 
             color: var(--text-color);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.025em;
         }
         
         .control-group select {
-            padding: 0.75rem 1rem;
+            padding: 0.6rem 0.8rem;
             border: 2px solid var(--medium-gray);
-            border-radius: 10px;
-            font-size: 0.95rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
             background-color: white;
             transition: all 0.2s ease;
             cursor: pointer;
@@ -375,40 +333,40 @@
         .control-group select:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
         }
         
-        .control-group button {
-            padding: 0.875rem 1.75rem;
+        .control-group button, .btn-primary {
+            padding: 0.7rem 1.5rem;
             background: var(--gradient-2);
             color: white;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
-            border-radius: 10px;
-            font-size: 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.025em;
             box-shadow: var(--shadow-sm);
         }
         
-        .control-group button:hover:not(:disabled) {
+        .control-group button:hover:not(:disabled), .btn-primary:hover:not(:disabled) {
             transform: translateY(-1px);
             box-shadow: var(--shadow-md);
         }
         
-        .control-group button:disabled {
+        .control-group button:disabled, .btn-primary:disabled {
             background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
             cursor: not-allowed;
             opacity: 0.7;
         }
         
         .control-group input, .control-group textarea {
-            padding: 0.75rem 1rem;
+            padding: 0.6rem 0.8rem;
             border: 2px solid var(--medium-gray);
-            border-radius: 10px;
-            font-size: 0.95rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
             background-color: white;
             transition: all 0.2s ease;
         }
@@ -416,63 +374,60 @@
         .control-group input:focus, .control-group textarea:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
-        }
-        
-        .challenge-btn {
-            background: linear-gradient(135deg, var(--accent-color) 0%, #ea580c 100%);
-            color: white;
-            font-weight: 600;
-            margin-top: 1rem;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-sm);
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
-        
-        .challenge-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
         }
 
-        /* --- Enhanced Venn Diagram Area --- */
+        /* --- Enhanced Interactive Area --- */
         .interactive-area { 
-            text-align: center; 
+            text-align: center;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+        
+        @media (max-width: 1000px) {
+            .interactive-area {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+        
+        .problem-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .venn-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
         }
         
         #statement-display, #analysis-statement-display {
-            background: linear-gradient(135deg, rgba(240, 253, 250, 0.7) 0%, rgba(250, 250, 250, 0.9) 100%);
+            background: rgba(240, 253, 250, 0.6);
             border-left: 4px solid var(--primary-color);
-            padding: 1.25rem 1.75rem;
-            margin-bottom: 1.5rem;
-            border-radius: 12px;
-            font-size: 1.05rem;
-            min-height: 60px;
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            min-height: 50px;
             box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
-        }
-        
-        #statement-display:hover, #analysis-statement-display:hover {
-            box-shadow: var(--shadow-md);
+            text-align: left;
         }
         
         .venn-container { 
             position: relative; 
             width: 100%; 
-            max-width: 400px; 
+            max-width: 450px; 
             margin: 0 auto;
-            padding: 1rem;
         }
         
         .venn-box {
             width: 100%;
-            max-width: 400px;
             height: 400px;
-            margin: 0 auto;
-            border-radius: 16px;
+            border-radius: 12px;
             background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
             overflow: hidden;
             box-shadow: var(--shadow-md);
@@ -506,16 +461,16 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, rgba(31, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
+            background: rgba(31, 41, 59, 0.9);
             color: white;
-            padding: 0.625rem 1rem;
-            border-radius: 10px;
-            font-size: 0.85rem;
+            padding: 0.5rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.2s ease;
             text-align: center;
-            width: 240px;
+            max-width: 200px;
             box-shadow: var(--shadow-lg);
         }
         
@@ -524,50 +479,46 @@
         }
         
         .venn-legend {
-            margin-top: 1.5rem;
-            padding: 1.25rem;
-            background: linear-gradient(135deg, rgba(250, 250, 250, 0.9) 0%, rgba(245, 247, 250, 0.6) 100%);
-            border-radius: 12px;
+            padding: 1rem;
+            background: rgba(250, 250, 250, 0.8);
+            border-radius: 8px;
             box-shadow: var(--shadow-sm);
+            text-align: left;
         }
         
         .legend-item {
             display: flex;
             align-items: flex-start;
-            gap: 1rem;
-            padding: 0.625rem;
-            border-radius: 10px;
+            gap: 0.8rem;
+            padding: 0.5rem;
+            border-radius: 6px;
             transition: background-color 0.2s ease;
         }
         
         .legend-item:hover {
-            background-color: rgba(20, 184, 166, 0.05);
+            background-color: rgba(15, 118, 110, 0.05);
         }
         
         .legend-item:not(:last-child) {
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
         }
         
         .legend-key {
             flex-shrink: 0;
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
             color: white;
+            font-size: 0.8rem;
             box-shadow: var(--shadow-sm);
-            transition: transform 0.2s ease;
-        }
-        
-        .legend-key:hover {
-            transform: scale(1.08);
         }
         
         .legend-key.p-key {
-            background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
+            background: var(--gradient-2);
         }
         
         .legend-key.q-key {
@@ -576,37 +527,38 @@
 
         /* --- Enhanced Feedback & Forms --- */
         .feedback-box {
-            margin: 1.5rem auto;
-            padding: 1.75rem;
-            border-radius: 16px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(250, 250, 250, 0.95) 100%);
+            margin: 1rem 0;
+            padding: 1.25rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.95);
             box-shadow: var(--shadow-md);
-            max-width: 500px;
             text-align: center;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            grid-column: 1 / -1;
         }
         
         .form-section {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
         }
         
         .form-section h3 {
             color: var(--text-color);
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             margin-bottom: 0.25rem;
         }
         
         .form-section p {
             color: var(--dark-gray);
             margin-bottom: 0.5rem;
+            font-size: 0.9rem;
         }
         
         .truth-radios {
             display: flex;
-            gap: 1.5rem;
+            gap: 1rem;
             margin: 0.5rem 0;
         }
         
@@ -615,9 +567,9 @@
             align-items: center;
             gap: 0.5rem;
             cursor: pointer;
-            padding: 0.75rem 1.5rem;
+            padding: 0.6rem 1.2rem;
             border: 2px solid var(--medium-gray);
-            border-radius: 10px;
+            border-radius: 6px;
             transition: all 0.2s ease;
             font-weight: 500;
             background: white;
@@ -629,72 +581,81 @@
             transform: translateY(-1px);
         }
         
-        .truth-radios input[type="radio"]:checked + label {
+        .truth-radios input[type="radio"]:checked + span {
+            color: var(--primary-color);
+        }
+        
+        .truth-radios input[type="radio"]:checked + span::parent {
             border-color: var(--primary-color);
             background-color: var(--primary-light);
         }
         
-        /* Style the Check Answer button specifically */
-        .form-section button[type="submit"] {
-            padding: 0.875rem 2.5rem;
-            background: var(--gradient-2);
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.025em;
-            box-shadow: var(--shadow-md);
-            margin-top: 0.5rem;
-        }
-        
-        .form-section button[type="submit"]:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .form-section button[type="submit"]:disabled {
-            background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-        
         #info-card {
-            margin-top: 1.5rem;
-            padding: 1.25rem;
+            margin-top: 1rem;
+            padding: 1rem;
             border: 2px solid transparent;
-            border-radius: 12px;
+            border-radius: 8px;
             text-align: left;
             transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
         
         #info-card h3 {
             margin-top: 0;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
         }
         
         #info-card.success {
             border-color: var(--success-color);
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(34, 197, 94, 0.04) 100%);
-            box-shadow: 0 0 20px rgba(34, 197, 94, 0.15);
+            background: rgba(34, 197, 94, 0.05);
         }
         
         #info-card.error {
             border-color: var(--error-color);
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.04) 100%);
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.15);
+            background: rgba(239, 68, 68, 0.05);
+        }
+        
+        #info-card.hint {
+            border-color: var(--warning-color);
+            background: rgba(245, 158, 11, 0.05);
         }
         
         .hidden {
             display: none;
         }
         
-        /* --- Enhanced Analysis Tab --- */
+        .btn-secondary {
+            padding: 0.6rem 1.2rem;
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            margin: 0.5rem;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--primary-light);
+            transform: translateY(-1px);
+        }
+        
+        .hint-btn {
+            background: var(--gradient-3);
+            color: white;
+            border: none;
+        }
+        
+        .hint-btn:hover {
+            background: var(--gradient-3);
+            filter: brightness(1.1);
+        }
+
+        /* --- Analysis Tab --- */
         .analysis-reveal-container {
-            margin: 1.5rem 0;
+            margin: 1rem 0;
             text-align: center;
         }
         
@@ -703,18 +664,18 @@
             flex-wrap: wrap;
             gap: 0.5rem;
             justify-content: center;
-            margin-top: 0.75rem;
+            margin-top: 0.5rem;
         }
         
         .reveal-btn {
-            padding: 0.625rem 1.25rem;
+            padding: 0.5rem 1rem;
             background: var(--gradient-2);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 500;
+            font-size: 0.85rem;
             transition: all 0.3s ease;
             box-shadow: var(--shadow-sm);
         }
@@ -732,184 +693,134 @@
         
         .analysis-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.25rem;
-            margin-top: 1.5rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
         }
         
-        @media (min-width: 700px) {
+        @media (max-width: 800px) {
             .analysis-grid {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: 1fr;
             }
         }
         
         .analysis-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(250, 250, 250, 0.95) 100%);
+            background: rgba(255, 255, 255, 0.95);
             border: 1px solid rgba(229, 231, 235, 0.6);
-            border-radius: 12px;
-            padding: 1.5rem;
+            border-radius: 8px;
+            padding: 1rem;
             box-shadow: var(--shadow-sm);
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
             animation: slideIn 0.5s ease;
         }
         
-        .analysis-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--gradient-2);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
         .analysis-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow: var(--shadow-md);
-        }
-        
-        .analysis-card:hover::before {
-            opacity: 1;
         }
         
         .analysis-card h4 {
             color: var(--text-color);
-            margin-bottom: 0.625rem;
-            font-size: 1.15rem;
-            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
         }
         
         .analysis-card .form {
             font-style: italic;
             color: var(--dark-gray);
-            margin-bottom: 1rem;
-            opacity: 0.9;
-            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
         }
         
         .truth-badge {
             display: inline-block;
-            padding: 0.25rem 0.625rem;
+            padding: 0.2rem 0.5rem;
             border-radius: 999px;
             font-weight: bold;
-            font-size: 0.8rem;
-            margin-left: 0.625rem;
-            box-shadow: var(--shadow-sm);
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
         
         .truth-badge.true {
-            background: linear-gradient(135deg, var(--success-color) 0%, #16a34a 100%);
+            background: var(--success-color);
             color: white;
         }
         
         .truth-badge.false {
-            background: linear-gradient(135deg, var(--error-color) 0%, #dc2626 100%);
+            background: var(--error-color);
             color: white;
         }
         
         .analysis-text p {
-            margin-bottom: 0.625rem;
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
-        
-        .btn-secondary {
-            padding: 0.75rem 1.5rem;
-            background: white;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary:hover {
-            background: var(--primary-light);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-sm);
-        }
-        
-        /* Warning notice for fallback */
-        .warning-notice {
-            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
-            color: #92400e;
-            padding: 0.625rem 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
             font-size: 0.9rem;
-            border-left: 3px solid var(--warning-color);
-            animation: fadeIn 0.5s ease;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .warning-notice {
+            background: rgba(251, 191, 36, 0.1);
+            color: #92400e;
+            padding: 0.5rem 0.8rem;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+            border-left: 3px solid var(--warning-color);
         }
         
         /* Animation for Venn diagram expansion */
         @keyframes expandCircle {
-            from {
-                r: 0.35;
-            }
-            to {
-                r: 0.62;
-            }
+            from { r: 0.35; }
+            to { r: 0.62; }
         }
         
         .expanding-circle {
             animation: expandCircle 1.5s ease-in-out forwards;
         }
 
+        /* Mathswell nav styles */
+        .mathswell-nav {
+            display: flex;
+            justify-content: center;
+            margin: 0.4rem 0 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .mathswell-nav .mw-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #0f766e;
+            padding: 0.3rem 0.7rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,.9);
+            box-shadow: 0 1px 4px rgba(0,0,0,.08);
+        }
+        .mathswell-nav .mw-link img {
+            display: block;
+        }
     </style>
-    <!-- Mathswell app navbar styles -->
-<style>
-  .mathswell-nav {
-    display: flex;
-    justify-content: center;
-    margin: .4rem 0 1rem;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-  .mathswell-nav .mw-link {
-    display: inline-flex;
-    align-items: center;
-    gap: .45rem;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 1rem;
-    color: #0f766e;
-    padding: .3rem .7rem;
-    border-radius: 999px;
-    background: rgba(255,255,255,.9);
-    box-shadow: 0 1px 4px rgba(0,0,0,.08);
-  }
-  .mathswell-nav .mw-link img {
-    display: block;
-  }
-</style>
 </head>
 <body>
     <div class="container">
         <h1>If-Then: A Logic Explorer</h1>
-         <!-- Mathswell brand badge -->
-<div style="display:flex;justify-content:center;margin:.75rem 0 1rem;
-            position:relative;z-index:1001;">
-  <a href="https://mathswell.com" style="display:inline-flex;align-items:center;gap:.5rem;
-      text-decoration:none;font-weight:800;font-size:1.05rem;color:#0f766e;
-      padding:.4rem .8rem;border-radius:999px;background:#fff;
-      box-shadow:0 1px 4px rgba(0,0,0,.08);">
-    <img src="/logo-mathswell-square-mirror.svg" alt="Mathswell" width="28" height="28" style="display:block">
-    <span>MATHSWELL</span>
-  </a>
-</div>
+        
+        <div style="display:flex;justify-content:center;margin:.75rem 0 1rem;
+                    position:relative;z-index:1001;">
+            <a href="https://mathswell.com" style="display:inline-flex;align-items:center;gap:.5rem;
+                text-decoration:none;font-weight:800;font-size:1.05rem;color:#0f766e;
+                padding:.4rem .8rem;border-radius:999px;background:#fff;
+                box-shadow:0 1px 4px rgba(0,0,0,.08);">
+                <img src="/logo-mathswell-square-mirror.svg" alt="Mathswell" width="28" height="28" style="display:block">
+                <span>MATHSWELL</span>
+            </a>
+        </div>
         
         <div class="tabs">
             <button class="tab active" data-tab="intro">Learn</button>
@@ -920,51 +831,50 @@
         <!-- Introduction Tab Content -->
         <div id="intro" class="tab-content active">
             <div class="intro-container">
-                <div class="intro-section" style="margin-top: 1rem; margin-bottom: 1.5rem;">
+                <div class="intro-section" style="margin-top: 1rem; margin-bottom: 1rem;">
                     <h2 style="margin-top: 0;">Understanding Conditional Statements</h2>
                     <p class="intro-text" style="margin-bottom: 1rem;">
                         A conditional statement "If P, then Q" describes a logical relationship between two parts:
                     </p>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div style="background: var(--primary-light); padding: 1.5rem; border-radius: 12px;">
+                        <div style="background: var(--primary-light); padding: 1.25rem; border-radius: 8px;">
                             <h3 style="margin-top: 0; margin-bottom: 0.5rem;">Hypothesis (P)</h3>
-                            <p style="margin: 0;">The "if" part - the condition that triggers the conclusion</p>
+                            <p style="margin: 0; font-size: 0.9rem;">The "if" part - the condition that triggers the conclusion</p>
                         </div>
-                        <div style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%); padding: 1.5rem; border-radius: 12px;">
+                        <div style="background: rgba(124, 58, 237, 0.1); padding: 1.25rem; border-radius: 8px;">
                             <h3 style="margin-top: 0; margin-bottom: 0.5rem; color: var(--secondary-color);">Conclusion (Q)</h3>
-                            <p style="margin: 0;">The "then" part - what must follow when P is true</p>
+                            <p style="margin: 0; font-size: 0.9rem;">The "then" part - what must follow when P is true</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="intro-section" style="margin-bottom: 1.5rem;">
-                    <h2 style="margin-top: 1.5rem;">Visualizing with Venn Diagrams</h2>
+                <div class="intro-section">
+                    <h2>Visualizing with Venn Diagrams</h2>
                     <p class="intro-text" style="margin-bottom: 1rem;">
                         Click to explore how different arrangements represent different logical relationships:
                     </p>
                     
-                    <div class="scenarios-grid" style="margin-bottom: 1.5rem;">
+                    <div class="scenarios-grid" style="margin-bottom: 1rem;">
                         <div class="scenario-card" onclick="showScenario('p-in-q', this)">
-                            <h4 style="margin-bottom: 0.5rem;">P inside Q</h4>
-                            <p style="margin: 0;">Every P is also a Q</p>
+                            <h4 style="margin-bottom: 0.5rem; font-size: 1rem;">P inside Q</h4>
+                            <p style="margin: 0; font-size: 0.85rem;">Every P is also a Q</p>
                         </div>
                         <div class="scenario-card" onclick="showScenario('q-in-p', this)">
-                            <h4 style="margin-bottom: 0.5rem;">Q inside P</h4>
-                            <p style="margin: 0;">Every Q is also a P</p>
+                            <h4 style="margin-bottom: 0.5rem; font-size: 1rem;">Q inside P</h4>
+                            <p style="margin: 0; font-size: 0.85rem;">Every Q is also a P</p>
                         </div>
                         <div class="scenario-card" onclick="showScenario('overlap', this)">
-                            <h4 style="margin-bottom: 0.5rem;">P and Q overlap</h4>
-                            <p style="margin: 0;">Some P are Q, some aren't</p>
+                            <h4 style="margin-bottom: 0.5rem; font-size: 1rem;">P and Q overlap</h4>
+                            <p style="margin: 0; font-size: 0.85rem;">Some P are Q, some aren't</p>
                         </div>
                         <div class="scenario-card" onclick="showScenario('disjoint', this)">
-                            <h4 style="margin-bottom: 0.5rem;">P and Q separate</h4>
-                            <p style="margin: 0;">No P is Q</p>
+                            <h4 style="margin-bottom: 0.5rem; font-size: 1rem;">P and Q separate</h4>
+                            <p style="margin: 0; font-size: 0.85rem;">No P is Q</p>
                         </div>
                     </div>
                     
-                    <div class="venn-display" style="padding: 1.5rem;">
+                    <div class="venn-display">
                         <svg id="intro-venn" viewBox="-1 -1 2 2" width="280" height="280">
-                            <!-- Default: P inside Q -->
                             <circle cx="0" cy="0" r="0.62" fill="rgba(124, 58, 237, 0.1)" stroke="#7c3aed" stroke-width="0.03"></circle>
                             <text x="0" y="-0.75" fill="#7c3aed" font-size="0.15" font-weight="bold" text-anchor="middle">Q</text>
                             <circle cx="0" cy="0" r="0.35" fill="rgba(15, 118, 110, 0.2)" stroke="#0f766e" stroke-width="0.03"></circle>
@@ -972,40 +882,32 @@
                         </svg>
                     </div>
                     
-                    <div style="margin-top: 1.5rem; padding: 1rem; background: var(--primary-light); border-radius: 12px;">
-                        <p style="font-weight: 600; margin-bottom: 0.25rem;">📌 Key Insight:</p>
-                        <p style="margin: 0;">"If P, then Q" is true ONLY when P is entirely inside Q. In all other arrangements, counterexamples exist (P true, Q false).</p>
+                    <div style="margin-top: 1rem; padding: 0.8rem; background: var(--primary-light); border-radius: 8px;">
+                        <p style="font-weight: 600; margin-bottom: 0.25rem; font-size: 0.9rem;">📌 Key Insight:</p>
+                        <p style="margin: 0; font-size: 0.85rem;">"If P, then Q" is true ONLY when P is entirely inside Q. In all other arrangements, counterexamples exist.</p>
                     </div>
                 </div>
 
-                <div class="intro-section" style="margin-bottom: 1.5rem;">
-                    <h2 style="margin-top: 1.5rem;">Real Examples</h2>
+                <div class="intro-section">
+                    <h2>Real Examples</h2>
                     
-                    <div class="example-box" style="margin-bottom: 1rem;">
-                        <h4 style="margin-top: 0; margin-bottom: 0.5rem;">Example 1: Numbers</h4>
-                        <p style="margin-bottom: 0.25rem;"><strong>Statement:</strong> "If a number is divisible by 6, then it is divisible by 3"</p>
-                        <p style="margin-bottom: 0.25rem;"><strong>TRUE</strong> - Every multiple of 6 is also a multiple of 3.</p>
-                        <p style="margin: 0;">The "divisible by 6" circle fits entirely inside "divisible by 3".</p>
-                    </div>
-                    
-                    <div class="example-box" style="margin-bottom: 1rem;">
-                        <h4 style="margin-top: 0; margin-bottom: 0.5rem;">Example 2: Geometry</h4>
-                        <p style="margin-bottom: 0.25rem;"><strong>Statement:</strong> "If a shape is a square, then it has four sides"</p>
-                        <p style="margin-bottom: 0.25rem;"><strong>TRUE</strong> - Every square has exactly four sides.</p>
-                        <p style="margin: 0;">Note: The reverse isn't true - rectangles have 4 sides but aren't squares!</p>
+                    <div class="example-box">
+                        <h4 style="margin-top: 0; margin-bottom: 0.5rem; font-size: 1rem;">Example 1: Numbers</h4>
+                        <p style="margin-bottom: 0.25rem; font-size: 0.9rem;"><strong>Statement:</strong> "If a number is divisible by 6, then it is divisible by 3"</p>
+                        <p style="margin-bottom: 0.25rem; font-size: 0.9rem;"><strong>TRUE</strong> - Every multiple of 6 is also a multiple of 3.</p>
+                        <p style="margin: 0; font-size: 0.85rem;">The "divisible by 6" circle fits entirely inside "divisible by 3".</p>
                     </div>
                     
                     <div class="example-box">
-                        <h4 style="margin-top: 0; margin-bottom: 0.5rem;">Finding Counterexamples</h4>
-                        <p style="margin-bottom: 0.25rem;">A statement is false if you find even one case where P is true but Q is false.</p>
-                        <p style="margin-bottom: 0.25rem;"><strong>Example:</strong> "If a number is prime, then it is odd"</p>
-                        <p style="margin: 0;"><strong>Counterexample:</strong> 2 is prime but even → FALSE</p>
+                        <h4 style="margin-top: 0; margin-bottom: 0.5rem; font-size: 1rem;">Finding Counterexamples</h4>
+                        <p style="margin-bottom: 0.25rem; font-size: 0.9rem;">A statement is false if you find even one case where P is true but Q is false.</p>
+                        <p style="margin-bottom: 0.25rem; font-size: 0.9rem;"><strong>Example:</strong> "If a number is prime, then it is odd"</p>
+                        <p style="margin: 0; font-size: 0.85rem;"><strong>Counterexample:</strong> 2 is prime but even → FALSE</p>
                     </div>
                 </div>
 
-                <div style="text-align: center; margin-top: 2rem; margin-bottom: 0;">
-                    <p class="intro-text" style="margin-bottom: 1rem;">Ready to test your understanding?</p>
-                    <button class="btn-secondary" onclick="switchToTab('lab')" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <button class="btn-secondary" onclick="switchToTab('lab')" style="font-size: 1rem; padding: 0.8rem 1.8rem;">
                         Start Practicing →
                     </button>
                 </div>
@@ -1017,15 +919,16 @@
             <div class="lab-intro-box">
                 <p><strong>Welcome to the Logic Lab!</strong></p>
                 <ul>
-                    <li>Use the controls to generate a new logic problem with AI.</li>
-                    <li>Analyze the "Converse" statement that appears.</li>
-                    <li>If it's false, provide your own counterexample and have the AI check it!</li>
+                    <li>Generate a new logic problem using AI assistance</li>
+                    <li>Analyze the "Converse" statement that appears</li>
+                    <li>Get guided hints and check your reasoning step by step</li>
                 </ul>
-                <p class="ai-disclaimer">Please note: The AI helper can make mistakes and may be temporarily unavailable during periods of high traffic.</p>
+                <p class="ai-disclaimer">The AI helper can make mistakes. AI helper may occasionally be unavailable during high traffic periods.</p>
             </div>
+            
             <div class="controls-grid">
                 <div class="control-group">
-                    <label for="categorySelect">1. Choose a Category</label>
+                    <label for="categorySelect">Choose Category</label>
                     <select id="categorySelect">
                         <option value="Numbers">Numbers</option>
                         <option value="Geometry">Geometry</option>
@@ -1034,60 +937,69 @@
                     </select>
                 </div>
                 <div class="control-group">
-                    <label for="difficultySelect">2. Choose a Difficulty</label>
+                    <label for="difficultySelect">Choose Difficulty</label>
                     <select id="difficultySelect">
                         <option value="Foundation">Foundation</option>
                         <option value="Medium">Medium</option>
                         <option value="Advanced">Advanced</option>
                     </select>
                 </div>
-                <div class="control-group generate-button-container">
-                    <button id="generateBtn">🤖 Generate a Problem with AI</button>
+                <div class="control-group">
+                    <button id="generateBtn" class="btn-primary">🤖 Generate Problem</button>
                 </div>
             </div>
 
             <div class="interactive-area">
-                <h2>Generated Problem</h2>
-                <div id="statement-display">
-                    <p>Select a category and difficulty, then click "Generate" to create a new problem.</p>
+                <div class="problem-section">
+                    <h2 style="margin-top: 0;">Generated Problem</h2>
+                    <div id="statement-display">
+                        <p>Select a category and difficulty, then click "Generate" to create a new problem.</p>
+                    </div>
+                    
+                    <div id="analysis-box" class="feedback-box" style="display: none;">
+                        <!-- Step 1: Ask True/False -->
+                        <form id="truthCheckForm" class="form-section">
+                            <h3>Is the Converse True or False?</h3>
+                            <p id="converse-statement" style="font-style: italic; background: var(--primary-light); padding: 0.5rem; border-radius: 4px;"></p>
+                            <div class="truth-radios">
+                                <label><input type="radio" name="truth" value="true"><span>True</span></label>
+                                <label><input type="radio" name="truth" value="false"><span>False</span></label>
+                            </div>
+                            <button type="submit" class="btn-primary">Check Answer</button>
+                        </form>
+                        
+                        <!-- Step 2: Ask for Counterexample -->
+                        <form id="counterexampleForm" class="form-section hidden">
+                            <h3>You're right, it's false!</h3>
+                            <p>Can you provide a counterexample where Q is true but P is false?</p>
+                            <div class="control-group" style="width:100%;">
+                               <input type="text" id="counterexampleInput" placeholder="Enter your counterexample here" required>
+                            </div>
+                            <button type="submit" class="btn-primary">Check Counterexample</button>
+                        </form>
+                        
+                        <!-- Info card for feedback -->
+                        <div id="info-card" class="hidden"></div>
+                        
+                        <!-- Challenge AI -->
+                        <form id="challengeForm" class="form-section hidden">
+                            <h3>Challenge the Assessment</h3>
+                            <p>If you believe the feedback is incorrect, explain your reasoning:</p>
+                             <div class="control-group" style="width:100%;">
+                               <textarea id="challengeInput" rows="3" placeholder="My reasoning is..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary">Submit Challenge</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="venn-container">
-                    <div id="venn-box" class="venn-box"></div>
-                    <div id="venn-tooltip"></div>
-                </div>
-                <div id="venn-legend" class="venn-legend" style="display: none;"></div>
-                <div id="analysis-box" class="feedback-box" style="display: none;">
-                    <!-- Step 1: Ask True/False -->
-                    <form id="truthCheckForm" class="form-section">
-                        <h3>Is the Converse ("If Q, then P") True or False?</h3>
-                        <p id="converse-statement"></p>
-                        <div class="truth-radios">
-                            <label><input type="radio" name="truth" value="true"> True</label>
-                            <label><input type="radio" name="truth" value="false"> False</label>
-                        </div>
-                        <button type="submit" class="control-group button">Check Answer</button>
-                    </form>
-                    <!-- Step 2: Ask for Counterexample -->
-                    <form id="counterexampleForm" class="form-section hidden">
-                        <h3>You're right, it's false!</h3>
-                        <p>The converse "<span id="converse-in-form"></span>" is indeed false.</p>
-                        <p>Please provide a counterexample where Q is true but P is false:</p>
-                        <div class="control-group" style="width:100%;">
-                           <input type="text" id="counterexampleInput" placeholder="Enter your counterexample here" required>
-                        </div>
-                        <button type="submit" class="control-group button">Check Counterexample</button>
-                    </form>
-                    <!-- Step 3: Show Final Feedback -->
-                    <div id="info-card" class="hidden"></div>
-                     <!-- Step 4: Challenge AI -->
-                    <form id="challengeForm" class="form-section hidden">
-                        <h3>Challenge the AI's Assessment</h3>
-                        <p>If you believe the AI is incorrect, please explain your reasoning.</p>
-                         <div class="control-group" style="width:100%;">
-                           <textarea id="challengeInput" rows="3" placeholder="My reasoning is..." required></textarea>
-                        </div>
-                        <button type="submit" class="control-group button">Submit Challenge</button>
-                    </form>
+                
+                <div class="venn-section">
+                    <h2 style="margin-top: 0;">Visual Analysis</h2>
+                    <div class="venn-container">
+                        <div id="venn-box" class="venn-box"></div>
+                        <div id="venn-tooltip"></div>
+                    </div>
+                    <div id="venn-legend" class="venn-legend" style="display: none;"></div>
                 </div>
             </div>
         </div>
@@ -1104,7 +1016,7 @@
             
             <div class="analysis-reveal-container">
                 <h3>Explore Related Forms</h3>
-                <p>Click to reveal each logical form one at a time:</p>
+                <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">Click to reveal each logical form one at a time:</p>
                 <div class="reveal-buttons">
                     <button class="reveal-btn" id="revealConverse" onclick="revealStatement('converse')">Converse</button>
                     <button class="reveal-btn" id="revealInverse" onclick="revealStatement('inverse')" disabled>Inverse</button>
@@ -1125,10 +1037,12 @@
         category: 'Numbers',
         difficulty: 'Foundation',
         currentProblem: null,
-        lastAIResponse: '', // Store AI reasoning for challenges
+        lastAIResponse: '',
         isLocked: false,
-        previousProblems: [], // Store previous problems to avoid duplicates
-        revealedStatements: []
+        previousProblems: [],
+        revealedStatements: [],
+        attemptCount: 0,
+        maxAttempts: 2
     };
 
     // --- FALLBACK PROBLEMS ---
@@ -1230,26 +1144,21 @@
     const vennLegend = document.getElementById('venn-legend');
     const analysisBox = document.getElementById('analysis-box');
     const analysisGrid = document.getElementById('analysis-grid');
-    // Forms
     const truthCheckForm = document.getElementById('truthCheckForm');
     const counterexampleForm = document.getElementById('counterexampleForm');
     const challengeForm = document.getElementById('challengeForm');
-    // Form Inputs/Display
     const converseStatement = document.getElementById('converse-statement');
-    const converseInForm = document.getElementById('converse-in-form');
     const counterexampleInput = document.getElementById('counterexampleInput');
     const challengeInput = document.getElementById('challengeInput');
     const infoCard = document.getElementById('info-card');
 
     // --- INTRO TAB FUNCTIONS ---
     function showScenario(scenario, element) {
-        // Update active state
         document.querySelectorAll('.scenario-card').forEach(card => {
             card.classList.remove('active');
         });
         element.classList.add('active');
         
-        // Update SVG
         const svg = document.getElementById('intro-venn');
         svg.innerHTML = '';
         
@@ -1308,16 +1217,12 @@
     });
 
     // --- IMPROVED AI FUNCTIONS ---
-    
-    // Extract and validate JSON from AI response
     function extractAndValidateJSON(text) {
         let data;
         
-        // Try direct parse first
         try {
             data = JSON.parse(text);
         } catch {
-            // Extract JSON from mixed text
             const jsonMatch = text.match(/\{[\s\S]*\}/);
             if (!jsonMatch) {
                 throw new Error('No JSON found in response');
@@ -1335,7 +1240,6 @@
             }
         }
         
-        // Validate required fields
         const required = ['p', 'q', 'converse', 'inverse', 'contrapositive'];
         for (const field of required) {
             if (!(field in data)) {
@@ -1343,19 +1247,16 @@
             }
         }
         
-        // Validate statement structures
         for (const type of ['converse', 'inverse', 'contrapositive']) {
             const stmt = data[type];
             if (!stmt.statement || typeof stmt.truth !== 'boolean') {
                 throw new Error(`Invalid ${type} structure`);
             }
             if (stmt.truth === false && !stmt.counterexample) {
-                // Provide a default counterexample if missing
                 stmt.counterexample = "example needed";
             }
         }
         
-        // Add not_p and not_q if missing
         if (!data.not_p) {
             data.not_p = `not (${data.p})`;
         }
@@ -1366,12 +1267,10 @@
         return data;
     }
     
-    // Call AI with retry logic
     async function callAI(prompt, retries = 2) {
         for (let i = 0; i <= retries; i++) {
             try {
                 if (i > 0) {
-                    // Wait before retry: 1s, 2s, 4s
                     await new Promise(r => setTimeout(r, Math.pow(2, i-1) * 1000));
                 }
                 
@@ -1394,14 +1293,13 @@
                     throw new Error('Empty response from AI');
                 }
                 
-                state.lastAIResponse = text; // Store raw response
+                state.lastAIResponse = text;
                 return text;
                 
             } catch (error) {
                 if (i === retries) {
                     throw error;
                 }
-                console.log(`Attempt ${i + 1} failed, retrying...`);
             }
         }
     }
@@ -1413,10 +1311,8 @@
         analysisStatementDisplay.innerHTML = `<p>Generating a new problem...</p>`;
         analysisGrid.innerHTML = '';
         
-        // Remove any existing warning notices
         document.querySelectorAll('.warning-notice').forEach(n => n.remove());
         
-        // Create a list of previous problems to avoid
         const previousPStatements = state.previousProblems.map(p => p.p).join(', ');
         
         const prompt = `
@@ -1458,17 +1354,14 @@
         `;
         
         try {
-            // Try AI generation with retries
             const response = await callAI(prompt, 2);
             state.currentProblem = extractAndValidateJSON(response);
             
-            // Store this problem to avoid duplicates
             state.previousProblems.push({
                 p: state.currentProblem.p,
                 q: state.currentProblem.q
             });
             
-            // Keep only last 10 problems
             if (state.previousProblems.length > 10) {
                 state.previousProblems.shift();
             }
@@ -1476,20 +1369,17 @@
         } catch (error) {
             console.error("AI generation failed:", error);
             
-            // Use fallback problem
             state.currentProblem = FALLBACK_PROBLEMS[state.category];
             
-            // Show subtle warning notice
             const notice = document.createElement('div');
             notice.className = 'warning-notice';
             notice.innerHTML = '⚠️ Using backup problem (AI temporarily unavailable)';
             statementDisplay.parentElement.insertBefore(notice, statementDisplay);
             
-            // Auto-remove notice after 5 seconds
             setTimeout(() => notice.remove(), 5000);
         } finally {
             generateBtn.disabled = false;
-            generateBtn.textContent = "🤖 Generate a Problem with AI";
+            generateBtn.textContent = "🤖 Generate Problem";
         }
         
         resetInteractiveState();
@@ -1499,7 +1389,7 @@
     function typesetMath(elements) {
         if (window.MathJax && window.MathJax.startup?.promise) {
             window.MathJax.startup.promise.then(() => {
-                window.MathJax.typesetPromise(elements).catch((err) => console.log('MathJax Typeset Error: ' + err.message));
+                window.MathJax.typesetPromise(elements).catch((err) => console.log('MathJax error'));
             });
         }
     }
@@ -1507,6 +1397,7 @@
     function resetInteractiveState() {
         state.isLocked = false;
         state.revealedStatements = [];
+        state.attemptCount = 0;
         analysisBox.style.display = 'none';
         vennLegend.style.display = 'none';
         [truthCheckForm, counterexampleForm, infoCard, challengeForm].forEach(el => el.classList.add('hidden'));
@@ -1519,8 +1410,8 @@
     function displayProblem() {
         const { p, q } = state.currentProblem;
         statementDisplay.innerHTML = `
-            <p><strong>If P, then Q:</strong> If ${p}, then ${q}.</p>
-            <p><em>(This statement is guaranteed to be true.)</em></p>
+            <p><strong>Original Statement:</strong> If ${p}, then ${q}.</p>
+            <p style="font-size: 0.85rem; color: var(--dark-gray);"><em>(This statement is guaranteed to be true.)</em></p>
         `;
         buildInteractiveVenn(false);
         converseStatement.innerHTML = state.currentProblem.converse.statement;
@@ -1528,39 +1419,75 @@
         typesetMath([statementDisplay, converseStatement]);
     }
     
-    // --- UI FLOW & EVENT HANDLERS ---
-    
+    // --- GUIDED RESPONSE SYSTEM ---
     function handleTruthCheckSubmit(e) {
         e.preventDefault();
         const userAnswer = truthCheckForm.truth.value === 'true';
         const isCorrect = userAnswer === state.currentProblem.converse.truth;
+        state.attemptCount++;
 
         truthCheckForm.classList.add('hidden');
 
         if (isCorrect) {
-            if (userAnswer === true) { // Correctly identified as TRUE
-                // Animate the Venn diagram - P expands to fill Q
+            if (userAnswer === true) {
                 animateVennToEqual();
                 setTimeout(() => {
-                    showResult('success', `<h3>Correct!</h3><p>The converse statement is indeed <strong>TRUE</strong>.</p><p>This means P and Q are equivalent - they describe the same set!</p>`);
+                    showResult('success', `<h3>Excellent!</h3><p>The converse statement is indeed <strong>TRUE</strong>.</p><p>This means P and Q are equivalent - they describe the same set!</p>`);
                 }, 1500);
-            } else { // Correctly identified as FALSE
-                // Populate the converse statement in the form
-                if (converseInForm) {
-                    converseInForm.innerHTML = state.currentProblem.converse.statement;
-                    typesetMath([converseInForm]);
-                }
+            } else {
                 counterexampleForm.classList.remove('hidden');
             }
-        } else { // Incorrectly identified
-            handleVennClick(); // Lock the diagram
-            const truthText = state.currentProblem.converse.truth ? "TRUE" : "FALSE";
-            let feedback = `<h3>Not Quite.</h3><p>The converse statement is actually <strong>${truthText}</strong>.</p>`;
-            if (!state.currentProblem.converse.truth) {
-                feedback += `<p>A counterexample is: <strong>${state.currentProblem.converse.counterexample}</strong>.</p>`;
+        } else {
+            // Provide guided feedback instead of immediate answer
+            if (state.attemptCount >= state.maxAttempts) {
+                handleVennClick();
+                const truthText = state.currentProblem.converse.truth ? "TRUE" : "FALSE";
+                let feedback = `<h3>Let's work through this together.</h3><p>The converse statement is actually <strong>${truthText}</strong>.</p>`;
+                if (!state.currentProblem.converse.truth) {
+                    feedback += `<p>Here's why: <strong>${state.currentProblem.converse.counterexample}</strong> is a counterexample.</p>`;
+                }
+                showResult('error', feedback);
+            } else {
+                // Provide hint instead of answer
+                provideHint();
             }
-            showResult('error', feedback);
         }
+    }
+    
+    function provideHint() {
+        const { converse } = state.currentProblem;
+        let hintText = `<h3>Think about it...</h3>`;
+        
+        if (converse.truth) {
+            hintText += `<p>Consider: if the converse were false, you'd need to find a case where Q is true but P is false. Can you think of such an example?</p>`;
+        } else {
+            hintText += `<p>For the converse to be true, ALL cases where Q is true would also need P to be true. Is that really the case here?</p>`;
+            hintText += `<p><strong>Hint:</strong> Think about ${converse.counterexample.replace(/\$/g, '')}...</p>`;
+        }
+        
+        hintText += `<button class="btn-secondary hint-btn" onclick="tryAgain()">Try Again</button>`;
+        if (state.attemptCount >= 1) {
+            hintText += `<button class="btn-secondary" onclick="revealAnswer()">Show Answer</button>`;
+        }
+        
+        showResult('hint', hintText);
+    }
+    
+    function tryAgain() {
+        infoCard.classList.add('hidden');
+        truthCheckForm.classList.remove('hidden');
+        // Reset the form but keep the attempt count
+        truthCheckForm.reset();
+    }
+    
+    function revealAnswer() {
+        handleVennClick();
+        const truthText = state.currentProblem.converse.truth ? "TRUE" : "FALSE";
+        let feedback = `<h3>Here's the answer:</h3><p>The converse statement is <strong>${truthText}</strong>.</p>`;
+        if (!state.currentProblem.converse.truth) {
+            feedback += `<p>A counterexample is: <strong>${state.currentProblem.converse.counterexample}</strong>.</p>`;
+        }
+        showResult('error', feedback);
     }
     
     // Animate Venn diagram to show P = Q
@@ -1569,23 +1496,19 @@
         if (!svg) return;
         
         const svgNS = "http://www.w3.org/2000/svg";
-        
-        // Find the P circle (smaller one)
         const circles = svg.querySelectorAll('circle');
         let pCircle = null;
         
         circles.forEach(circle => {
             const r = parseFloat(circle.getAttribute('r'));
-            if (r >= 0.35 && r <= 0.45) { // Find the P circle
+            if (r >= 0.35 && r <= 0.45) {
                 pCircle = circle;
             }
         });
         
         if (pCircle) {
-            // Add animation to expand P to match Q
             pCircle.style.transition = 'all 1.5s ease-in-out';
             
-            // Create an animated circle that expands
             const animatedCircle = document.createElementNS(svgNS, "circle");
             animatedCircle.setAttribute("cx", "0");
             animatedCircle.setAttribute("cy", "0");
@@ -1595,11 +1518,9 @@
             animatedCircle.setAttribute("stroke-width", "0.03");
             animatedCircle.classList.add('expanding-circle');
             
-            // Insert the animated circle
             svg.insertBefore(animatedCircle, pCircle);
             pCircle.style.opacity = '0';
             
-            // Add a text label showing P = Q
             setTimeout(() => {
                 const equalText = document.createElementNS(svgNS, "text");
                 equalText.setAttribute("x", "0");
@@ -1627,11 +1548,11 @@
         e.preventDefault();
         const userCounterexample = counterexampleInput.value;
         counterexampleForm.classList.add('hidden');
-        showResult('loading', '<h3>Checking with AI...</h3>');
+        showResult('loading', '<h3>Checking with AI...</h3><div style="text-align: center;">🤔</div>');
 
         const { p, q } = state.currentProblem;
         const prompt = `
-            IMPORTANT: You are checking a counterexample for the CONVERSE statement, NOT the original.
+            IMPORTANT: You are checking a counterexample for the CONVERSE statement.
             
             The CONVERSE statement is: "If ${q}, then ${p}."
             User's proposed counterexample: "${userCounterexample}"
@@ -1640,19 +1561,18 @@
             - "${q}" must be TRUE for ${userCounterexample}
             - "${p}" must be FALSE for ${userCounterexample}
             
-            Check if both conditions are met. Use LaTeX for math.
-            If valid: "Yes, that works because [explain why ${q} is true and ${p} is false]"
-            If invalid: "Not quite. [Explain which condition fails]"
+            Be encouraging but accurate. Use LaTeX for math.
+            If valid: "Great work! That's correct because [brief explanation]"
+            If invalid: "Not quite. [Gentle explanation of what's needed]"
         `;
 
         try {
             const aiFeedback = await callAI(prompt, 1);
-            const isCorrect = aiFeedback.toLowerCase().startsWith('yes');
-            showResult(isCorrect ? 'success' : 'error', `<h3>AI Feedback:</h3><p>${aiFeedback}</p>`);
+            const isCorrect = aiFeedback.toLowerCase().includes('great') || aiFeedback.toLowerCase().includes('correct');
+            showResult(isCorrect ? 'success' : 'hint', `<h3>AI Feedback:</h3><p>${aiFeedback}</p>`);
         } catch (error) {
             console.error("AI check failed:", error);
-            // Provide a generic response when AI fails
-            showResult('success', `<h3>Response:</h3><p>Your counterexample "${userCounterexample}" has been recorded. For the converse to be false, we need Q true but P false.</p>`);
+            showResult('success', `<h3>Response:</h3><p>Your counterexample "${userCounterexample}" has been noted. For the converse to be false, we need an example where Q is true but P is false.</p>`);
         }
     }
 
@@ -1660,48 +1580,52 @@
         e.preventDefault();
         const userReasoning = challengeInput.value;
         challengeForm.classList.add('hidden');
-        showResult('loading', '<h3>Re-evaluating with AI...</h3>');
+        showResult('loading', '<h3>Re-evaluating...</h3><div style="text-align: center;">🤖</div>');
 
         const prompt = `
-            You are re-evaluating your previous assessment.
+            Re-evaluate your previous assessment.
             Original: If P, then Q is "If ${state.currentProblem.p}, then ${state.currentProblem.q}".
             Converse analyzed: "If ${state.currentProblem.q}, then ${state.currentProblem.p}".
             Your previous response: "${state.lastAIResponse}"
-            Challenge reasoning: "${userReasoning}"
+            User's challenge: "${userReasoning}"
 
-            Be brief. Use LaTeX for math.
-            If you were wrong, admit it and correct.
-            If you were right, explain the flaw in their reasoning.
+            Be brief and fair. Use LaTeX for math.
+            If you were wrong, admit it clearly.
+            If you were right, explain kindly why the challenge reasoning has a flaw.
         `;
         
         try {
             const aiReevaluation = await callAI(prompt, 1);
-            showResult('neutral', `<h3>AI Re-evaluation:</h3><p>${aiReevaluation}</p>`);
+            showResult('hint', `<h3>AI Re-evaluation:</h3><p>${aiReevaluation}</p>`);
         } catch (error) {
-            console.error("AI re-evaluation failed:", error);
-            showResult('neutral', `<h3>Re-evaluation:</h3><p>Thank you for your challenge. Your reasoning has been noted for consideration.</p>`);
+            showResult('hint', `<h3>Re-evaluation:</h3><p>Thank you for your challenge. Your reasoning has been considered.</p>`);
         }
     }
 
     function showResult(type, htmlContent) {
-        infoCard.className = ''; // Reset classes
+        infoCard.className = '';
+        
         if (type === 'loading') {
             infoCard.innerHTML = htmlContent;
-        } else if (type === 'neutral') {
-            infoCard.innerHTML = htmlContent;
-            infoCard.style.borderColor = 'var(--dark-gray)';
-            infoCard.style.backgroundColor = '#f0f0f0';
         } else {
-            infoCard.classList.add(type); // 'success' or 'error'
+            if (type !== 'hint') {
+                infoCard.classList.add(type);
+            } else {
+                infoCard.classList.add('hint');
+            }
             infoCard.innerHTML = htmlContent;
-            const challengeBtn = document.createElement('button');
-            challengeBtn.className = 'control-group button challenge-btn';
-            challengeBtn.textContent = '🤔 Challenge AI\'s Assessment';
-            challengeBtn.onclick = () => {
-                challengeForm.classList.remove('hidden');
-                infoCard.classList.add('hidden');
-            };
-            infoCard.appendChild(challengeBtn);
+            
+            if (type === 'success' || type === 'error') {
+                const challengeBtn = document.createElement('button');
+                challengeBtn.className = 'btn-secondary';
+                challengeBtn.style.marginTop = '0.75rem';
+                challengeBtn.textContent = '🤔 Challenge Assessment';
+                challengeBtn.onclick = () => {
+                    challengeForm.classList.remove('hidden');
+                    infoCard.classList.add('hidden');
+                };
+                infoCard.appendChild(challengeBtn);
+            }
         }
         infoCard.classList.remove('hidden');
         typesetMath([infoCard]);
@@ -1718,8 +1642,6 @@
         const { p, q, converse } = state.currentProblem;
         const converse_truth = converse.truth;
         
-        // Always start with P inside Q for visual consistency
-        // Animation will expand P if converse is true
         const RP = 0.40, RQ = 0.62;
 
         const defs = document.createElementNS(svgNS, "defs");
@@ -1732,8 +1654,8 @@
 
         const qCircleBase = document.createElementNS(svgNS, "circle");
         qCircleBase.setAttribute("cx", "0"); qCircleBase.setAttribute("cy", "0");
-        qCircleBase.setAttribute("r", RQ); qCircleBase.setAttribute("fill", "rgba(21,101,192,0.1)");
-        qCircleBase.setAttribute("stroke", "#555"); qCircleBase.setAttribute("stroke-width", "0.03");
+        qCircleBase.setAttribute("r", RQ); qCircleBase.setAttribute("fill", "rgba(124, 58, 237, 0.1)");
+        qCircleBase.setAttribute("stroke", "#7c3aed"); qCircleBase.setAttribute("stroke-width", "0.03");
         svg.appendChild(qCircleBase);
 
         let failRegionGroup = null;
@@ -1768,20 +1690,20 @@
         
         const pCircleBase = document.createElementNS(svgNS, "circle");
         pCircleBase.setAttribute("cx", "0"); pCircleBase.setAttribute("cy", "0");
-        pCircleBase.setAttribute("r", RP); pCircleBase.setAttribute("fill", "rgba(21,101,192,0.2)");
-        pCircleBase.setAttribute("stroke", "#333"); pCircleBase.setAttribute("stroke-width", "0.03");
+        pCircleBase.setAttribute("r", RP); pCircleBase.setAttribute("fill", "rgba(15, 118, 110, 0.2)");
+        pCircleBase.setAttribute("stroke", "#0f766e"); pCircleBase.setAttribute("stroke-width", "0.03");
         svg.appendChild(pCircleBase);
         
         const qLabel = document.createElementNS(svgNS, "text");
         qLabel.setAttribute("x", "0"); qLabel.setAttribute("y", "-0.7");
-        qLabel.setAttribute("fill", "#333"); qLabel.setAttribute("font-size", "0.25");
+        qLabel.setAttribute("fill", "#7c3aed"); qLabel.setAttribute("font-size", "0.25");
         qLabel.setAttribute("font-weight", "bold"); qLabel.setAttribute("text-anchor", "middle");
         qLabel.textContent = "Q";
         svg.appendChild(qLabel);
 
         const pLabel = document.createElementNS(svgNS, "text");
         pLabel.setAttribute("x", "0"); pLabel.setAttribute("y", "0.08");
-        pLabel.setAttribute("fill", "#111");
+        pLabel.setAttribute("fill", "#0f766e");
         pLabel.setAttribute("font-size", "0.3");
         pLabel.setAttribute("font-weight", "bold");
         pLabel.setAttribute("text-anchor", "middle");
@@ -1832,17 +1754,17 @@
         vennLegend.innerHTML = `
             <div class="legend-item">
                 <div class="legend-key p-key">P</div>
-                <div><strong>Hypothesis (P):</strong> ${p}</div>
+                <div><strong>Hypothesis:</strong> ${p}</div>
             </div>
             <div class="legend-item">
                 <div class="legend-key q-key">Q</div>
-                <div><strong>Conclusion (Q):</strong> ${q}</div>
+                <div><strong>Conclusion:</strong> ${q}</div>
             </div>
         `;
         typesetMath([vennLegend]);
         
         if (!converse_truth) {
-            vennTooltip.textContent = `Counterexample region for "If Q, then P": Q is true, but P is false.`;
+            vennTooltip.textContent = `Counterexample region: Q is true, but P is false.`;
         }
     }
 
@@ -1862,7 +1784,6 @@
             <p><strong>Original Statement:</strong> If ${p}, then ${q}.</p>
         `;
         
-        // Reset reveal state
         state.revealedStatements = [];
         analysisGrid.innerHTML = '';
         document.getElementById('revealConverse').disabled = false;
@@ -1913,7 +1834,7 @@
                     <p class="form">If not Q, then not P</p>
                     <div class="analysis-text">
                         <p>${contrapositive.statement}</p>
-                        <p><em>This is always logically equivalent to the original statement.</em></p>
+                        <p><em>Always logically equivalent to the original statement.</em></p>
                     </div>
                 `;
                 document.getElementById('revealConditions').disabled = false;
@@ -1923,14 +1844,14 @@
                 let conditionsHTML = `
                     <h4>Necessary & Sufficient Conditions</h4>
                     <div class="analysis-text">
-                        <p><strong>Sufficient:</strong> Knowing that "${p}" is true is <strong>sufficient</strong> to conclude that "${q}" is true.</p>
-                        <p><strong>Necessary:</strong> For "${p}" to be true, it is <strong>necessary</strong> that "${q}" is also true.</p>
+                        <p><strong>Sufficient:</strong> "${p}" is sufficient to conclude "${q}".</p>
+                        <p><strong>Necessary:</strong> For "${p}" to be true, "${q}" must also be true.</p>
                 `;
                 
                 if (converse.truth) {
                     conditionsHTML += `
-                        <hr style="margin: 1rem 0; border: none; border-top: 1px solid var(--medium-gray);">
-                        <p><strong>Biconditional:</strong> Because the converse is also true, the conditions are equivalent. P is <strong>necessary and sufficient</strong> for Q (and vice-versa).</p>
+                        <hr style="margin: 0.75rem 0; border: none; border-top: 1px solid var(--medium-gray);">
+                        <p><strong>Biconditional:</strong> Since the converse is also true, P is necessary and sufficient for Q.</p>
                     `;
                 }
                 
@@ -1943,7 +1864,6 @@
         typesetMath([card]);
     }
 
-
     // --- EVENT LISTENERS ---
     categorySelect.addEventListener('change', (e) => state.category = e.target.value);
     difficultySelect.addEventListener('change', (e) => state.difficulty = e.target.value);
@@ -1952,7 +1872,7 @@
     counterexampleForm.addEventListener('submit', handleCounterexampleSubmit);
     challengeForm.addEventListener('submit', handleChallengeSubmit);
 
-    // Initialize first scenario as active
+    // Initialize
     window.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.scenario-card').click();
     });
@@ -1961,7 +1881,6 @@
    
 </body>
 </html>
-
 
 
 
