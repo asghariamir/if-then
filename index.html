@@ -1455,14 +1455,14 @@
     }
     
     function provideHint() {
-        const { converse } = state.currentProblem;
+        const { p, q, converse } = state.currentProblem;
         let hintText = `<h3>Think about it...</h3>`;
         
         if (converse.truth) {
-            hintText += `<p>Consider: if the converse were false, you'd need to find a case where Q is true but P is false. Can you think of such an example?</p>`;
+            hintText += `<p>Consider: if the converse were false, you'd need to find a case where "${q}" is true but "${p}" is false. Can you think of such an example?</p>`;
         } else {
-            hintText += `<p>For the converse to be true, ALL cases where Q is true would also need P to be true. Is that really the case here?</p>`;
-            hintText += `<p><strong>Hint:</strong> Think about ${converse.counterexample.replace(/\$/g, '')}...</p>`;
+            hintText += `<p>For the converse to be true, ALL cases where "${q}" is true would also need "${p}" to be true. Is that really the case here?</p>`;
+            hintText += generateContextualHint(p, q, state.category);
         }
         
         hintText += `<button class="btn-secondary hint-btn" onclick="tryAgain()">Try Again</button>`;
@@ -1471,6 +1471,43 @@
         }
         
         showResult('hint', hintText);
+    }
+    
+    function generateContextualHint(p, q, category) {
+        // Generate contextual hints based on the problem domain
+        let hint = `<p><strong>Guiding question:</strong> `;
+        
+        if (category === 'Numbers') {
+            if (q.includes('even')) {
+                hint += `Can you think of any even numbers that might not satisfy the other condition?</p>`;
+            } else if (q.includes('divisible')) {
+                hint += `Are there numbers that meet the divisibility requirement but not the other condition?</p>`;
+            } else if (q.includes('real')) {
+                hint += `What about numbers whose square roots are real but aren't perfect squares?</p>`;
+            } else {
+                hint += `Think of specific numbers that satisfy "${q}" - do they all satisfy "${p}"?</p>`;
+            }
+        } else if (category === 'Geometry') {
+            if (q.includes('right angles')) {
+                hint += `What shapes have four right angles? Do they all fit the other description?</p>`;
+            } else if (q.includes('sides')) {
+                hint += `Think of different shapes with that number of sides - do they all meet the other requirement?</p>`;
+            } else {
+                hint += `Consider various shapes that have this property - do they all satisfy the other condition?</p>`;
+            }
+        } else if (category === 'Calculus') {
+            if (q.includes('continuous')) {
+                hint += `Can you think of functions that are continuous at a point but might not have the other property?</p>`;
+            } else if (q.includes('differentiable')) {
+                hint += `Are there functions with this property that don't satisfy the other condition?</p>`;
+            } else {
+                hint += `Think of specific functions that satisfy "${q}" - do they all satisfy "${p}"?</p>`;
+            }
+        } else {
+            hint += `Think of specific examples that satisfy "${q}" - do they all satisfy "${p}"?</p>`;
+        }
+        
+        return hint;
     }
     
     function tryAgain() {
